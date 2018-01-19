@@ -13,6 +13,8 @@ CREATE TABLE musicas (
   music_artista longtext NOT NULL,
   music_album longtext NOT NULL,
   music_data_envio DATETIME NOT NULL,
-  music_file longtext NOT NULL
+  music_file longtext NOT NULL,
+  music_status varchar(1) NOT NULL
+  user_id int NOT NULL
 );
 

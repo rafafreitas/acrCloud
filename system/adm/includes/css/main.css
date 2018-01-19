@@ -1,0 +1,178 @@
+@media (min-width:768px){.modal-dialog{width: 750px;margin:30px auto;}
+
+div.maskLoad {
+    z-index: 2;
+    position: fixed;
+    left:0; right:0; top:0; bottom:0;
+    opacity: 0.2;
+    background-color: #66CDAA;
+}
+
+.addonSearch{
+  cursor: pointer;
+}
+
+.esconderCusto{
+	padding-top: 60px;
+}
+
+.esconder_minus{
+	cursor: pointer;
+	font-size: 15pt;
+}
+.esconderCusto_div{
+	margin-top: 8px;
+}
+
+.stausForm{
+	max-width: 300px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+a#btnCalendario{
+	background-color: #FC7A23;
+}a#btnCustos{
+	background-color: #CEE248;
+}a#btnFiles{
+	background-color: #40E0D0;
+}button#btnFiles{
+	background-color: #40E0D0;
+}a#btnBank{
+	background-color: #CFF09E;
+}
+
+.divFileAt{
+	margin-right: auto!important;
+	margin-left: auto!important;
+	max-width: 400px!important;
+}
+
+div#divVincularTaxas{
+	max-width: 350px!important;
+}
+
+span.addonPerc{
+	background-color: #E1F1F7;
+}
+
+.labelEsconderImp{
+	font-size: 14pt;
+
+}
+
+.esconderImp{
+	cursor: pointer;
+	font-size: 15pt;
+}
+.divEsconderImp{
+	margin-top: 4px!important;
+}
+.divComplemento{
+	padding: 0px!important;
+}
+
+	#produtos_foto_video {
+		width: 732px;
+		height: auto;
+		margin: 5px 10px 10px 0px;
+		padding: 0px;
+		text-align:left;
+		float: left;	
+		display: block;
+		background-color: #E9E9E9;
+	}
+
+
+/*CSS para Input Radio*/
+.option-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  position: relative;
+  top: 13.33333px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 40px;
+  width: 40px;
+  transition: all 0.15s ease-out 0s;
+  background: #cbd1d8;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 0.5rem;
+  outline: none;
+  position: relative;
+  z-index: 1000;
+}
+.option-input:hover {
+  background: #9faab7;
+}
+.option-input:checked {
+  background: #c7db42;/*40e0d0*/
+}
+.option-input:checked::before {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  content: '✔';
+  display: inline-block;
+  font-size: 26.66667px;
+  text-align: center;
+  line-height: 39px;
+}
+.option-input:checked::after {
+  /*-webkit-animation: click-wave 0.65s;
+  -moz-animation: click-wave 0.65s;
+  animation: click-wave 0.65s;*/
+  background: #c7db42;
+  content: '';
+  display: block;
+  position: relative;
+  z-index: 100;
+}
+.option-input.radio {
+  border-radius: 50%;
+}
+.option-input.radio::after {
+  border-radius: 50%;
+}
+
+
+.checkValidade{
+	margin-bottom: 0px;
+  max-width: 400px;
+}
+
+.img-update-estoque{
+  width: 200px; 
+}
+
+#produtoDetalhe{
+  margin-top: 40px;
+}
+
+/* Estoque */
+div#cond-estoque-nome{
+  max-width: 250px;
+  font-size: 12pt!important;
+  line-height: initial;
+  margin-top: 5px;
+}
+
+h3#cond-estoque-dados{
+  font-size: 10pt!important;
+  margin-top: 5px!important;
+}
+
+div#div-icon{
+  right: 30px!important;
+  top: 15px!important;
+}
+i.condStyle{
+  font-size: 40px!important;
+}
