@@ -5,21 +5,12 @@ $(document).ready(function(){
   //alert(getTime());
   var tableAt;
   var tableIn;
-  initPage();
+  initPage(tableAt);
   initTable(tableAt, tableIn);
 
 });
 
-function initPage() {
-
-  $("#musicaUpload").fileinput({
-    overwriteInitial: false,
-    initialPreviewFileType: 'image', 
-    'showUpload':false, 
-    language: "pt-BR",
-    allowedFileExtensions: ["mp3","wav","wma","ogg"],
-    maxFilePreviewSize: 10240//10MB
-  });
+function initPage(tableAt) {
 
   $('#loadPublicacao').hide();
   
@@ -194,8 +185,88 @@ function initTable(tableAt, tableIn) {
     }
   });//plusClick
 
-  
+  $("#musicaUpload").fileinput({
+    overwriteInitial: false,
+    initialPreviewAsData: true, 
+    initialPreviewFileType: 'music', 
+
+    uploadUrl: '/system/adm/manter.php',
+    uploadExtraData: {acao:'manterMusicas', tipoAcao: 'adicionar', id: "1"},
+    language: "pt-BR",
+    'showUpload':true, 
+    allowedFileExtensions: ["mp3","wav","wma","ogg"],
+    maxFilePreviewSize: 10240//10MB
+    }).on('fileuploaded', function(event, data, id, index) {
+    
+      $('#alertaSuccess').show();
+      tableAt.ajax.reload();
+      //resetForm('formCadastrar');
+      setTimeout(function() {
+        $('#alertaSuccess').hide();
+      }, 2000);
+
+      console.log(event);
+      console.log("---");
+      console.log(data);
+      console.log("---");
+      console.log(id);
+      console.log("---");
+      console.log(index);
+      console.log("---");
+
+  });
 
 }//initTable
 
+function enabDisabled(Id_Update, tableAt, tableIn, status) {
+  if (status == 'A') {
+    stName = "ativar";
+  }if (status == 'I') {
+    stName = "inativar";
+  }
+  bootbox.confirm({
+    message: "<h3 class='text-center'>Deseja "+stName+" esta Música?</h3>",
+    buttons: {
+      confirm: {
+        label: 'Sim!',
+        className: 'btn-success'
+      },
+      cancel: {
+        label: 'Cancelar!',
+        className: 'btn-danger'
+      }
+    },
+    callback: function (confirma) {
+      if (confirma == true) {
+        $('#loadPublicacao').show();
+        var acao = 'manterMusicas';
+        var tipoAcao = 'enableDisable'; 
+        $.ajax({
+          url:"manter.php",                    
+          type:"post",                            
+          data: "Id_Update="+Id_Update+"&acao="+acao+"&tipoAcao="+tipoAcao+"&status="+status,
+          success: function (result){ 
+            if (result == 1) {
+              $('#loadPublicacao').hide();
+              $('#alertaSucessoInfo').show();
+              tableAt.ajax.reload();
+              tableIn.ajax.reload();
+              setTimeout(function() {
+                $('#alertaSucessoInfo').hide();
+              }, 3000);   
+            }if (result !=1){
+              $('#loadPublicacao').hide();
+              $('#alertaErro').show();
+              setTimeout(function() {
+                $('#alertaErro').hide();
+              }, 3000);                   
+            }
+          }
+        });
+      }else{
+
+      }
+    }//callback
+  });//bootbox
+}//delUser
 
