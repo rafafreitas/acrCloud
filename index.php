@@ -29,12 +29,14 @@
 
 
     <script>
-        $(document).ready(function(){
-        $('#erroLogin').hide(); //Esconde o elemento com id errolog
-        $('#erroBanco').hide();
-            $('#formAcesso').submit(function(){  //Ao submeter formulário
-                $('#erroLogin').hide();
-                $('#erroBanco').hide();
+      $(document).ready(function(){
+          $('#erroLogin').hide(); //Esconde o elemento com id errolog
+          $('#erroCadastro').hide();
+          $('#erroBanco').hide();
+          
+          $('#formAcesso').submit(function(){  //Ao submeter formulário
+            $('#erroLogin').hide();
+            $('#erroBanco').hide();
                 var login=$('#email').val();    //Pega valor do campo Login
                 var senha=$('#senha').val();    //Pega valor do campo senha
                 $.ajax({            //Função AJAX
@@ -42,24 +44,51 @@
                     type:"post",                            //Método de envio
                     data: "login="+login+"&senha="+senha,   //Dados
                     success: function (result){             //Sucesso no AJAX
-                        if(result==1){                      
+                      if(result==1){                      
                             location.href='red.php'    //Redireciona
-                        }if(result==2){
+                          }if(result==2){
                             $('#erroLogin').addClass('animated shake');
                             $('#erroLogin').show();
                             $("#erroLogin").html("<p class='text-center'>Dados incorretos! Tente novamente.</p>");
-                        }if (result !=1 && result != 2){
+                          }if (result !=1 && result != 2){
                             $('#erroBanco').addClass('animated shake');
                             $('#erroBanco').show();
                             $("#erroBanco").html("<p class='text-center'>Erro: "+ result+ "</p>");
                             //Está retornando o erro apenas para testes, depois será exibido uma mensagem amigável.
-                        }  
-                    }
-                })
+                          }  
+                        }
+                      });
             return false;   //Evita que a página seja atualizada
-            })
-        })
-    </script>
+          });
+
+            //Cadastro
+            $('#formRegister').submit(function(){  //Ao submeter formulário
+              $('#erroCadastro').hide();
+              $('#erroBanco').hide();
+                var nome=$('#nome2').val();    //Pega valor do campo Login
+                var login=$('#login2').val();    //Pega valor do campo Login
+                var senha=$('#senha2').val();    //Pega valor do campo senha
+                $.ajax({            //Função AJAX
+                    url:"cadastro.php",                    //Arquivo php
+                    type:"post",                            //Método de envio
+                    data: "nome="+nome+"&login="+login+"&senha="+senha,   //Dados
+                    success: function (result){             //Sucesso no AJAX
+                      if(result==1){                      
+                        $('#erroCadastro').addClass('animated shake');
+                        $('#erroCadastro').show();
+                        $("#erroCadastro").html("<p class='text-center'>Dados cadastrados, você já pode fazer seu Login!</p>");
+                      }if (result !=1){
+                        $('#erroCadastro').addClass('animated shake');
+                        $('#erroCadastro').show();
+                        $("#erroCadastro").html("<p class='text-center'>Erro: "+ result+ "</p>");
+                            //Está retornando o erro apenas para testes, depois será exibido uma mensagem amigável.
+                          }  
+                        }
+                      })
+              return false;   //Evita que a página seja atualizada
+            });
+          })
+        </script>
 
 
   </head>
@@ -75,22 +104,22 @@
              <form id="formAcesso" action="validacao.php" method="post">
               <h1>Área Restrita</h1>
               <div>
-                <input type="text" class="form-control" id="email" name="email" placeholder="E-Mail" required="" />
+                <input type="text" class="form-control" id="email" name="email" placeholder="E-Mail" required />
               </div>
               <div>
-                <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha" required="" />
+                <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha" required />
               </div>
               <p id="erroLogin"></p>
               <div>
                 <input type="submit" class="btn btn-default" value="Entrar">
-                <a class="reset_pass" href="#signup">Esqueceu a senha?</a>
+                <a class="reset_pass" href="#">Esqueceu a senha?</a>
               </div>
 
               <div class="clearfix"></div>
 
               <div class="separator">
                 <p class="change_link">Novo no whatMusic?
-                  <a href="#" class="to_register"> Cadastre-se </a>
+                  <a href="#signup" class="to_register"> Cadastre-se </a>
                 </p>
 
                 <div class="clearfix"></div>
@@ -108,17 +137,21 @@
 
         <div id="register" class="animate form registration_form">
           <section class="login_content">
-            <form>
-              <h1>Reset sua senha</h1>
+            <form id="formRegister">
+              <h1>Informe os dados</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Informe seu Login" required="" />
+                <input type="text" id="nome2" name="nome" class="form-control" placeholder="Informe seu Nome" required />
+              </div>
+               <div>
+                <input type="text" id="login2" name="login" class="form-control" placeholder="Login para acesso" required />
               </div>
               <div>
-                <input type="date" class="form-control" placeholder="Data de Nascimento" required="" />
+                <input type="password" id="senha2" name="senha" class="form-control" placeholder="Senha" required />
               </div>
               <div>
-                <a class="btn btn-default submit" href="index.html">Solicitar</a>
+                <input type="submit" class="btn btn-default" value="Cadastrar">
               </div>
+              <p id="erroCadastro"></p>
 
               <div class="clearfix"></div>
 
