@@ -26,6 +26,18 @@
 
   <script type="text/javascript" src="includes/js/manterMusicas.js"></script>
 
+  <style type="text/css">
+    td.details-control {
+      background: url('images/plus.png') no-repeat center center;
+      cursor: pointer;
+      background-size: 25px 25px;
+    }
+    tr.shown td.details-control {
+      background: url('images/minus_02.png') no-repeat center center;
+      cursor: pointer;
+      background-size: 25px 25px;
+    }
+  </style>
 
 </head>
 

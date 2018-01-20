@@ -51,10 +51,15 @@ function initTable(tableAt, tableIn) {
             { data: "music_album" },
             { data: "music_data_envio" },
             { 
-              //data: "id_admin", 
-              defaultContent: "<button type='button' class='btn btn-warning' id='ouvir' title='Ouvir'><span class='fa fa-play'></button>&nbsp;"+
-                              "<button type='button' class='btn btn-danger' id='desativar' title='Desativar'><span class='fa fa-ban'></button>"
-            }
+              "render" : function(data, type, full, meta) {
+                var music_file = full.music_file;
+                var music_id = full.music_id;
+                return "<button type='button' class='btn btn-warning' id='ouvir' title='Ouvir'><span class='fa fa-play'></button>&nbsp;"+
+                        "<audio id='music"+music_id+"'> <source src='/system/_files/musicas/"+music_file+"' type='audio/mp3'> </audio>&nbsp;"+
+                        "<button type='button' class='btn btn-danger' id='desativar' title='Desativar'><span class='fa fa-ban'></button>"
+              } 
+            },
+
         ],
     fixedHeader: true,
     "language": {
@@ -129,6 +134,16 @@ function initTable(tableAt, tableIn) {
     var idClick = $(this).attr('id');
     switch(idClick) {
       case 'ouvir':
+          var vid = document.getElementById("music"+data.music_id); 
+
+          if (vid.duration > 0 && !vid.paused) {
+            vid.pause();
+            $(this).find('span').toggleClass('fa-pause fa-play')
+          } else {
+            vid.play(); 
+            $(this).find('span').toggleClass('fa-play fa-pause') 
+          }
+          
           //updateObj(data, 'A');
           break;
       case 'desativar':
@@ -173,15 +188,28 @@ function initTable(tableAt, tableIn) {
     var row = tableAt.row(tr);
 
     if ( row.child.isShown() ) {
-      //var index = array_id.indexOf(data.id_pedido);
-      //array_id.splice(index,1);
       // Fecha a linha
       row.child.hide();
       tr.removeClass('shown');
     }
     else {
-      //array_id.push(data.id_pedido);
-      openChild(data.id_pedido, row, tr);
+      openChild(data, row, tr);
+    }
+  });//plusClick
+
+  //plusClick
+  $('#datatable-music-inactive tbody').on('click', 'td.details-control', function () {
+    var data = tableAt.row( $(this).parents('tr') ).data();
+    var tr = $(this).closest('tr');
+    var row = tableAt.row(tr);
+
+    if ( row.child.isShown() ) {
+      // Fecha a linha
+      row.child.hide();
+      tr.removeClass('shown');
+    }
+    else {
+      openChild(data, row, tr);
     }
   });//plusClick
 
@@ -216,6 +244,25 @@ function initTable(tableAt, tableIn) {
   });
 
 }//initTable
+
+function openChild(dados, row, tr){
+    $('#alertaRecor').show();
+    row.child( format(row.data())).show();
+    tr.addClass('shown');
+    $('#alertaRecor').hide();
+  }
+
+
+
+function format (d) {
+  console.log(d);
+  
+
+  return '<h3 class="text-center"> Poderia ser exibido mais detalhes aqui, recebo os dados vindo do servidor.(Console.log())</h3>';
+
+    // `d` is the original data object for the row
+}
+
 
 function enabDisabled(Id_Update, tableAt, tableIn, status) {
   if (status == 'A') {
