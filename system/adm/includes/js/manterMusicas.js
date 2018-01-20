@@ -65,7 +65,7 @@ function initTable(tableAt, tableIn) {
     "language": {
       "lengthMenu": "Exibir _MENU_ por página",
       "zeroRecords": "Nada encontrado, desculpe.",
-      "processing": "Buscando novos pedidos...",
+      "processing": "Buscando novas músicas...",
       "info": "Exibindo página _PAGE_ de _PAGES_",
       "infoEmpty": "Nenhum registro disponível",
       "infoFiltered": "(Filtrado de _MAX_ registros totais)",
@@ -106,16 +106,20 @@ function initTable(tableAt, tableIn) {
             { data: "music_album" },
             { data: "music_data_envio" },
             { 
-              //data: "id_admin", 
-              defaultContent: "<button type='button' class='btn btn-warning' id='ouvir' title='Ouvir'><span class='fa fa-play'></button>&nbsp;"+
-                              "<button type='button' class='btn btn-danger' id='desativar' title='Desativar'><span class='fa fa-ban'></button>"
-            }
+              "render" : function(data, type, full, meta) {
+                var music_file = full.music_file;
+                var music_id = full.music_id;
+                return "<button type='button' class='btn btn-warning' id='ouvir' title='Ouvir'><span class='fa fa-play'></button>&nbsp;"+
+                        "<audio id='music"+music_id+"'> <source src='/system/_files/musicas/"+music_file+"' type='audio/mp3'> </audio>&nbsp;"+
+                        "<button type='button' class='btn btn-success' id='ativar' title='Ativar'><span class='fa fa-check'></button>"
+              } 
+            },
         ],
     fixedHeader: true,
     "language": {
       "lengthMenu": "Exibir _MENU_ por página",
       "zeroRecords": "Nada encontrado, desculpe.",
-      "processing": "Buscando novos pedidos...",
+      "processing": "Buscando novas músicas...",
       "info": "Exibindo página _PAGE_ de _PAGES_",
       "infoEmpty": "Nenhum registro disponível",
       "infoFiltered": "(Filtrado de _MAX_ registros totais)",
@@ -165,7 +169,15 @@ function initTable(tableAt, tableIn) {
     var idClick = $(this).attr('id');
     switch(idClick) {
       case 'ouvir':
-          //updateObj(data, 'I');
+          var vid = document.getElementById("music"+data.music_id); 
+
+          if (vid.duration > 0 && !vid.paused) {
+            vid.pause();
+            $(this).find('span').toggleClass('fa-pause fa-play')
+          } else {
+            vid.play(); 
+            $(this).find('span').toggleClass('fa-play fa-pause') 
+          }
           break;
       case 'ativar':
           enabDisabled(data.music_id, tableAt, tableIn, 'A');
