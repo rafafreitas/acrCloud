@@ -58,7 +58,10 @@ switch ($acao) {
 		        	echo '{erro: Input_Vazio}';
 		         	die;
 		       	}else{
+
 			       	$idOng = $_POST["id"];
+
+			       	ini_set( "session.save_path", "/includes/temp" );
 
 			       	$http_method = "POST";
 			       	$http_uri = "/v1/identify";
@@ -78,13 +81,15 @@ switch ($acao) {
 			       	$signature = hash_hmac("sha1", $string_to_sign, $access_secret, true);
 			       	$signature = base64_encode($signature);
 
+			       	$upload_audio = upload_file( 'musicaUpload', false, '', '', 'musicas', 'musicas.php');
 
-					$file = $argv[1];
-					// $file = $_FILES['musicaUpload'];
-		         	$filesize = filesize($file);
-					// $filesize = $_FILES['musicaUpload']['size'];
-		         	$cfile = new CURLFile($file, "mp3", basename($argv[1]));
-					// $cfile = new CURLFile($file, "mp3", $_FILES['musicaUpload']['tmp_name']);
+					//$file = $argv[1];
+		         	//$filesize = filesize($file);
+		         	//$cfile = new CURLFile($file, "mp3", basename($argv[1]));
+
+					$file = $upload_audio->file_dst_path.$upload_audio->file_dst_name;
+					$filesize = $upload_audio->file_src_size;
+					$cfile = new CURLFile($file, "mp3", $upload_audio->file_dst_name);
 		         	$postfields = array(
 			         	"sample" => $cfile, 
 			         	"sample_bytes"=>$filesize, 
@@ -99,24 +104,44 @@ switch ($acao) {
 			        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			        $result = curl_exec($ch);
-			        echo $result;
-					// $response = curl_exec($ch);
-
-					// if ($response == true) {
-					//    $info = curl_getinfo($ch);
-					// } else {
-					//    $errmsg = curl_error($ch);
-					//    print $errmsg;
-					// }
 		         	curl_close($ch);
+			        
+			        $result = json_decode($result, true);
 
-			        $result = array(
-			         	'post' => $_POST,
-			         	'input' => $_FILES
-			        );
+			        if ($result['status']['msg'] == 'Success') {
 
-		        	$json=json_encode($result);
-		        	echo "$json";
+			        	if (!isset($_SESSION)) session_start();
+						$id_get = $_SESSION['UsuarioID'];
+						$status = "A";
+			        	$music = $result['metadata']['music'];
+
+						$sql = $pdo->prepare("INSERT INTO musicas 
+											(music_name, music_artista, music_album, 
+											 music_data_envio, music_file, user_id, music_status)
+											VALUES (?, ?, ?, NOW(), ?, ?, ?)"); 
+			        	$sql->bindParam(1, $music[0]['title'] , PDO::PARAM_STR);
+						$sql->bindParam(2, $music[0]['artists'][0]['name'] , PDO::PARAM_STR);
+						$sql->bindParam(3, $music[0]['album']['name'] , PDO::PARAM_STR);
+						$sql->bindParam(4, $upload_audio->file_dst_name , PDO::PARAM_STR);
+						$sql->bindParam(5, $id_get , PDO::PARAM_STR);
+						$sql->bindParam(6, $status , PDO::PARAM_STR);
+						$sql->execute();
+
+						$res = array(
+							'status' => 'OK', 
+							'message' => 'Música Registrada'
+							);
+			        	$json=json_encode($res);
+			        	echo "$json";
+						
+			        }else{
+			        	$res = array(
+							'status' => 'ERRO', 
+							'message' => 'Música Não registrada, tente novamente!'
+							);
+			        	$json=json_encode($res);
+			        	echo "$json";
+			        }
 
 		     	}
 

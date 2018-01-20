@@ -47,7 +47,7 @@ function initTable(tableAt, tableIn) {
                 "defaultContent": ''
             },
             { data: "music_name" },
-            { data: "music_artista " },
+            { data: "music_artista" },
             { data: "music_album" },
             { data: "music_data_envio" },
             { 
@@ -97,7 +97,7 @@ function initTable(tableAt, tableIn) {
                 "defaultContent": ''
             },
             { data: "music_name" },
-            { data: "music_artista " },
+            { data: "music_artista" },
             { data: "music_album" },
             { data: "music_data_envio" },
             { 
@@ -198,21 +198,20 @@ function initTable(tableAt, tableIn) {
     maxFilePreviewSize: 10240//10MB
     }).on('fileuploaded', function(event, data, id, index) {
     
-      $('#alertaSuccess').show();
-      tableAt.ajax.reload();
-      //resetForm('formCadastrar');
-      setTimeout(function() {
-        $('#alertaSuccess').hide();
-      }, 2000);
+      console.log(data.response);
+      if (data.response.status == 'OK') {
+        $('#alertaSuccess').show();
+        tableAt.ajax.reload();
+        setTimeout(function() {
+          $('#alertaSuccess').hide();
+        }, 2000);
 
-      console.log(event);
-      console.log("---");
-      console.log(data);
-      console.log("---");
-      console.log(id);
-      console.log("---");
-      console.log(index);
-      console.log("---");
+      }else{
+        $('#alertaErro').show();
+        setTimeout(function() {
+          $('#alertaErro').hide();
+        }, 2000);    
+      }
 
   });
 

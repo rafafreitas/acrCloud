@@ -17,8 +17,10 @@ function upload_file($input, $resize, $width, $height, $pasta, $retorno){
 		$handle->Process('../_files/'.$pasta);
 
 		if ($handle->processed) {
-			$name = $handle->file_dst_name;
-			return $name;
+			//$name = $handle->file_dst_name;
+			// var_dump($handle);
+			// die;
+			return $handle;
 			//Retorna o nome da imagem
 		} else {			
 			//return $handle->error;

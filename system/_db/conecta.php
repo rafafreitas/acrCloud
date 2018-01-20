@@ -8,7 +8,7 @@ try {
 	// 	array( PDO::MYSQL_ATTR_INIT_COMMAND => 'set lc_time_names="pt_BR"') );
 
 	//Servidor Local - USBW
-	$pdo = new PDO("mysql:host=localhost;dbname=acrCloud;charset=utf8", "root", "", 
+	$pdo = new PDO("mysql:host=localhost;dbname=teste;charset=utf8", "root", "root", 
 		array( PDO::MYSQL_ATTR_INIT_COMMAND => 'set lc_time_names="pt_BR"') );
 
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
